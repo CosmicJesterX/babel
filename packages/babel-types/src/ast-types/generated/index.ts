@@ -1059,6 +1059,7 @@ export interface ClassPrivateProperty extends BaseNode {
   decorators?: Array<Decorator> | null;
   static: boolean;
   definite?: boolean | null;
+  optional?: boolean | null;
   readonly?: boolean | null;
   typeAnnotation?: TypeAnnotation | TSTypeAnnotation | Noop | null;
   variance?: Variance | null;
@@ -1096,6 +1097,12 @@ export interface PrivateName extends BaseNode {
 export interface StaticBlock extends BaseNode {
   type: "StaticBlock";
   body: Array<Statement>;
+}
+
+export interface ImportAttribute extends BaseNode {
+  type: "ImportAttribute";
+  key: Identifier | StringLiteral;
+  value: StringLiteral;
 }
 
 export interface AnyTypeAnnotation extends BaseNode {
@@ -1624,12 +1631,6 @@ export interface BindExpression extends BaseNode {
   callee: Expression;
 }
 
-export interface ImportAttribute extends BaseNode {
-  type: "ImportAttribute";
-  key: Identifier | StringLiteral;
-  value: StringLiteral;
-}
-
 export interface Decorator extends BaseNode {
   type: "Decorator";
   expression: Expression;
@@ -1748,7 +1749,7 @@ export interface TSPropertySignature extends BaseNode {
   key: Expression;
   typeAnnotation?: TSTypeAnnotation | null;
   computed?: boolean;
-  kind: "get" | "set";
+  kind?: "get" | "set" | null;
   optional?: boolean | null;
   readonly?: boolean | null;
 }
@@ -2196,7 +2197,8 @@ export type Standardized =
   | ClassPrivateProperty
   | ClassPrivateMethod
   | PrivateName
-  | StaticBlock;
+  | StaticBlock
+  | ImportAttribute;
 export type Expression =
   | ArrayExpression
   | AssignmentExpression

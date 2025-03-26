@@ -200,15 +200,17 @@ function parseWithCodeFrame(
   }
 
   parserOpts = {
+    allowAwaitOutsideFunction: true,
     allowReturnOutsideFunction: true,
+    allowNewTargetOutsideFunction: true,
     allowSuperOutsideMethod: true,
+    allowYieldOutsideFunction: true,
     sourceType: "module",
     ...parserOpts,
     plugins,
   };
 
   try {
-    // @ts-expect-error todo: use babel-types ast typings in Babel parser
     return parse(code, parserOpts);
   } catch (err) {
     const loc = err.loc;

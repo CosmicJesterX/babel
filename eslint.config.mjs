@@ -56,6 +56,7 @@ export default [
       "packages/babel-standalone/babel.min.js",
       "packages/babel-parser/test/expressions",
       "packages/babel-core/src/vendor",
+      "packages/babel-parser/typings/**/*",
       "eslint/*/lib",
       "eslint/*/node_modules",
       "eslint/*/test/fixtures",
@@ -76,6 +77,7 @@ export default [
         requireConfigFile: false,
         babelOptions: {
           babelrc: false,
+          browserslistConfigFile: false,
           configFile: false,
           // Todo: Remove the parserOpts here after the proposal gets stage 4.
           parserOpts: {
@@ -277,12 +279,13 @@ export default [
             "itNoESM",
             "itNoWin32",
             "itESM",
+            "itNegate",
+            "itSatisfies",
             "nodeGte8",
+            "nodeGte10",
             "nodeGte14",
             "nodeGte12",
             "nodeGte20",
-            "nodeGte22_12",
-            "nodeLt22_12",
             "nodeLt23_6",
             "nodeGte23_6",
             "nodeGte12NoESM",

@@ -478,6 +478,16 @@ function buildRollup(packages, buildStandalone) {
                 sourceMap: sourcemap,
                 include: "**/*.{js,mjs,cjs,ts}",
               }),
+            // https://github.com/babel/babel/issues/14301
+            buildStandalone &&
+              rollupReplace({
+                preventAssignment: false,
+                delimiters: ["", ""],
+                values: {
+                  "return require.resolve(path);":
+                    "throw new Error('Babel internal error');",
+                },
+              }),
           ].filter(Boolean),
         });
 
@@ -621,6 +631,7 @@ function buildRollupDts(packages) {
       "packages/babel-parser/typings/babel-parser.source.d.ts",
       "packages/babel-parser/typings/babel-parser.d.ts",
       "// This file is auto-generated! Do not modify it directly.\n" +
+        "// Run `yarn gulp bundle-dts` to re-generate it.\n" +
         // @typescript-eslint/no-redundant-type-constituents can be removed once we drop the IF_BABEL_7 type
         "/* eslint-disable @typescript-eslint/consistent-type-imports, @typescript-eslint/no-redundant-type-constituents */",
       "packages/babel-parser"
@@ -768,8 +779,9 @@ gulp.task("generate-type-helpers", () => {
 
   return Promise.all([
     generateTypeHelpers("asserts"),
+    generateTypeHelpers("builders", "lowercase.ts"),
+    generateTypeHelpers("builders", "uppercase.ts"),
     generateTypeHelpers("builders"),
-    generateTypeHelpers("builders", "uppercase.js"),
     generateTypeHelpers("constants"),
     generateTypeHelpers("validators"),
     generateTypeHelpers("ast-types"),
